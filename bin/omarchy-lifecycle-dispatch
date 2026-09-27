@@ -33,7 +33,7 @@ operations=(
   boot-rebuild
   luks-slots
   migrate
-  setup-system setup-user
+  setup-boot setup-system setup-user
   post-install pre-remove
 )
 
@@ -101,9 +101,11 @@ fi
 # boot chain, and its boot checks prove the kept LUKS slots that luks-slots
 # records, so those operations are required. So is update-takeover: the Mac
 # boot chain and its image own files no package does, and a Mac whose boot
-# package can't vouch for a takeover keeps them. update-preflight and migrate
-# are optional, and boot-rebuild stays optional until a platform ships it.
-# Setup and the app-install hooks are optional: a Mac without omarchy-mac keeps
+# package can't vouch for a takeover keeps them. So is setup-boot, the Mac's
+# boot setup (the GRUB console and the Limine activation), which hardware setup
+# has no other way to run. update-preflight and migrate are optional, and
+# boot-rebuild stays optional until a platform ships it. System and user setup
+# and the app-install hooks are optional: a Mac without omarchy-mac keeps
 # Omarchy's generic setup and installs.
 # Moving an operation to required also changes apple_optional in
 # test/shell.d/lifecycle-dispatch-test.sh and the Apple column and registration
@@ -122,6 +124,7 @@ case $platform:$operation in
       reset-prepare reset-verify reset-commit reset-rollback
       update-verify update-takeover
       luks-slots
+      setup-boot
     )
     ;;
   *)
