@@ -29,7 +29,7 @@ set -euo pipefail
 operations=(
   provision-prepare provision-commit provision-verify
   reset-prepare reset-verify reset-commit reset-rollback
-  update-preflight update-verify
+  update-preflight update-verify update-takeover
   boot-rebuild
   luks-slots
   migrate
@@ -99,8 +99,10 @@ fi
 # omarchy-mac (both omacom/omarchy-mac). Provisioning and factory reset have no
 # other path on a Mac, only update-verify checks what an update left in its
 # boot chain, and its boot checks prove the kept LUKS slots that luks-slots
-# records, so those operations are required. update-preflight and migrate are
-# optional, and boot-rebuild stays optional until a platform ships it.
+# records, so those operations are required. So is update-takeover: the Mac
+# boot chain and its image own files no package does, and a Mac whose boot
+# package can't vouch for a takeover keeps them. update-preflight and migrate
+# are optional, and boot-rebuild stays optional until a platform ships it.
 # Setup and the app-install hooks are optional: a Mac without omarchy-mac keeps
 # Omarchy's generic setup and installs.
 # Moving an operation to required also changes apple_optional in
@@ -118,7 +120,7 @@ case $platform:$operation in
     required=(
       provision-prepare provision-commit provision-verify
       reset-prepare reset-verify reset-commit reset-rollback
-      update-verify
+      update-verify update-takeover
       luks-slots
     )
     ;;
