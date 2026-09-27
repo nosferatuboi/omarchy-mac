@@ -303,6 +303,9 @@ and/or a working user systemd instance:
   first login and opens the cheatsheet when clicked. The caller runs
   `omarchy-notification-wait` once before this and the Wi-Fi step, so both
   toasts land on a live notification server.
+- `install/user/first-run/timezone.sh` — on an image-built root (its image
+  manifest, retired or not) still on UTC, a toast that opens the timezone
+  menu. An ISO install is never asked.
 - `install/user/first-run/wifi.sh` — Wi-Fi/update toasts (waits detached on
   `nm-online` so the update prompt only lands once there is a connection).
 
